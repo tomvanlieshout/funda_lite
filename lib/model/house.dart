@@ -5,7 +5,6 @@ class House {
 
   List<String> get photos => _extractPhotos();
   String? get adUrl => _sourceMap['URL'];
-  bool get isFavorited => _sourceMap['isFavorited'] ?? false;
 
   String? get streetAndHouseNo => _sourceMap['Adres'];
   String? get postalCode => _sourceMap['Postcode'];

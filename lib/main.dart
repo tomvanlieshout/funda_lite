@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:funda_lite/api/funda_api.dart';
-import 'package:funda_lite/model/house.dart';
-import 'package:funda_lite/widgets/loading_widget.dart';
-import 'package:funda_lite/widgets/photo_gallery.dart';
+import 'package:funda_lite/pages/house_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -27,25 +24,14 @@ class MyApp extends StatelessWidget {
 
 class MyHomePage extends StatefulWidget {
   final String title;
-  final FundaApi api;
 
-  const MyHomePage({super.key, required this.title}) : api = const FundaApi();
+  const MyHomePage({super.key, required this.title});
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  late final Future<House> house;
-
-  @override
-  void initState() {
-    super.initState();
-    _fetchHouse();
-  }
-
-  _fetchHouse() => house = widget.api.getHouse();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,21 +41,7 @@ class _MyHomePageState extends State<MyHomePage> {
           style: const TextStyle(color: Colors.white),
         ),
       ),
-      body: Center(
-        child: FutureBuilder(
-          builder: ((context, snapshot) {
-            return snapshot.data != null
-                ? Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[
-                      PhotoGallery(snapshot.data?.photos ?? []),
-                    ],
-                  )
-                : const LoadingWidget();
-          }),
-          future: house,
-        ),
-      ),
+      body: const Center(child: HousePage()),
     );
   }
 }
