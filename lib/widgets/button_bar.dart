@@ -7,9 +7,6 @@ class ButtonBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: [...buttons],
-    );
+    return Row(children: [...buttons]);
   }
 }

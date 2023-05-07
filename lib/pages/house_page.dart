@@ -4,6 +4,7 @@ import 'package:funda_lite/model/house.dart';
 
 import 'package:funda_lite/widgets/button_bar.dart' as funda;
 import 'package:funda_lite/widgets/loading_widget.dart';
+import 'package:funda_lite/widgets/main_info_section.dart';
 import 'package:funda_lite/widgets/photo_gallery.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -17,7 +18,7 @@ class HousePage extends StatefulWidget {
 }
 
 class _HousePageState extends State<HousePage> {
-  late final Future<House> house;
+  late final Future<House> response;
   bool isFavorited = false;
 
   @override
@@ -26,7 +27,7 @@ class _HousePageState extends State<HousePage> {
     _fetchHouse();
   }
 
-  _fetchHouse() => house = widget.api.getHouse();
+  _fetchHouse() => response = widget.api.getHouse();
 
   @override
   Widget build(BuildContext context) {
@@ -36,13 +37,34 @@ class _HousePageState extends State<HousePage> {
             ? Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
-                  PhotoGallery(snapshot.data?.photos ?? []),
-                  _buildButtonBar(snapshot.data!),
+                  PhotoGallery(snapshot.data!.photos),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8.0),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        MainInfoSection(
+                          address: snapshot.data!.streetAndHouseNo ?? '',
+                          postalCode: snapshot.data!.postalCode ?? '',
+                          city: snapshot.data!.city ?? '',
+                          price: snapshot.data!.price ?? '',
+                          squareMeters: snapshot.data!.squareMeters as int,
+                          numberOfBedrooms: snapshot.data!.bedrooms as int,
+                          energyGrade: snapshot.data!.energyGrade ?? '',
+                        ),
+                        Align(
+                          alignment: Alignment.topRight,
+                          child: _buildButtonBar(snapshot.data!),
+                        ),
+                      ],
+                    ),
+                  )
                 ],
               )
             : const LoadingWidget();
       }),
-      future: house,
+      future: response,
     );
   }
 

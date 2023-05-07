@@ -9,10 +9,10 @@ class House {
   String? get streetAndHouseNo => _sourceMap['Adres'];
   String? get postalCode => _sourceMap['Postcode'];
   String? get city => _sourceMap['Plaats'];
-  num? get price => _sourceMap['Prijs']?['Koopprijs'];
+  String? get price => '€${_sourceMap['Prijs']?['Koopprijs'].toString().replaceRange(3, 3, '.')}'; // Add euro-sign and '.' after first three digits
   num? get squareMeters => _sourceMap['WoonOppervlakte'];
   num get bedrooms => _sourceMap['AantalKamers'] ?? 0;
-  String? get energyGrade => _sourceMap['EnergieLabel']?['Label'];
+  String? get energyGrade => _sourceMap['Energielabel']?['Label'];
 
   String? get description => _sourceMap['VolledigeBeschrijving'];
   String? get constructionYear => _sourceMap['Bouwjaar'];
