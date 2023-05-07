@@ -1,8 +1,8 @@
-import 'dart:developer' as debug;
-
 import 'package:flutter/material.dart';
 import 'package:funda_lite/api/funda_api.dart';
 import 'package:funda_lite/model/house.dart';
+import 'package:funda_lite/widgets/loading_widget.dart';
+import 'package:funda_lite/widgets/photo_gallery.dart';
 
 void main() {
   runApp(const MyApp());
@@ -36,17 +36,15 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  late final House house;
+  late final Future<House> house;
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _fetchHouse();
-    });
+    _fetchHouse();
   }
 
-  _fetchHouse() async => house = await widget.api.getHouse();
+  _fetchHouse() => house = widget.api.getHouse();
 
   @override
   Widget build(BuildContext context) {
@@ -58,14 +56,19 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: const <Widget>[],
+        child: FutureBuilder(
+          builder: ((context, snapshot) {
+            return snapshot.data != null
+                ? Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      PhotoGallery(snapshot.data?.photos ?? []),
+                    ],
+                  )
+                : const LoadingWidget();
+          }),
+          future: house,
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.download, color: Colors.white),
-        onPressed: () => debug.log(house.toString()),
       ),
     );
   }
