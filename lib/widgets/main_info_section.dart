@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:funda_lite/widgets/energy_grade.dart';
 
 class MainInfoSection extends StatelessWidget {
   final String address;
@@ -38,9 +39,9 @@ class MainInfoSection extends StatelessWidget {
               padding: const EdgeInsets.only(left: 8.0, right: 8.0),
               child: Text(price, style: const TextStyle(fontSize: 16)),
             ),
-            _buildTextAndIcon(squareMeters.toString(), Icons.square_foot_rounded),
+            _buildTextAndIcon('${squareMeters.toString()}m²', Icons.square_foot_rounded),
             _buildTextAndIcon(numberOfBedrooms.toString(), Icons.bedroom_parent_outlined),
-            _buildEnegryGradeIcon(energyGrade),
+            EnergyGrade(energyGrade),
           ],
         ),
       ],
@@ -71,44 +72,11 @@ class MainInfoSection extends StatelessWidget {
               icon,
               size: 16,
             ),
-            Text(text, style: const TextStyle(fontSize: 16)),
+            Padding(
+              padding: const EdgeInsets.only(left: 4.0),
+              child: Text(text, style: const TextStyle(fontSize: 16)),
+            ),
           ],
         ),
       );
-
-  Widget _buildEnegryGradeIcon(String energyGrade) => Padding(
-        padding: const EdgeInsets.only(left: 8.0, top: 2.0),
-        child: Container(
-          width: 32,
-          height: 20,
-          color: _mapColorToGrade(energyGrade),
-          child: Center(
-            child: Text(
-              energyGrade,
-              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
-            ),
-          ),
-        ),
-      );
-
-  Color _mapColorToGrade(String energyGrade) {
-    switch (energyGrade) {
-      case 'A':
-        return Colors.green;
-      case 'B':
-        return Colors.greenAccent;
-      case 'C':
-        return Colors.lightGreen;
-      case 'D':
-        return Colors.yellow;
-      case 'E':
-        return Colors.amber;
-      case 'F':
-        return Colors.orange;
-      case 'G':
-        return Colors.red;
-      default:
-        return Colors.grey;
-    }
-  }
 }
