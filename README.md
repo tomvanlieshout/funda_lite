@@ -15,3 +15,10 @@ However, it is advised to run it on a device with a screen resolution of 1080x23
 There is a unit test to check the serialization of the House-model. To run this test, run the following command from the root of the project:
 
 ```flutter test```
+
+## Demo
+
+Watch the clip below to see the app in action!
+
+https://user-images.githubusercontent.com/39647023/236691728-ad018bd2-33cb-4515-af61-d3b9ce58b6c5.mp4
+
