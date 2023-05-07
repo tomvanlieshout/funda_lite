@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:funda_lite/api/funda_api.dart';
+import 'package:funda_lite/model/house.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -12,5 +13,15 @@ void main() {
     expect('Brink 19', source.streetAndHouseNo);
 
     // etc...
+
+    final map = {
+      'URL': 'www.abc.com',
+      'city': 'Nijmegen',
+      'price': '10',
+      // etc...
+    };
+    final house = House.fromMap(map);
+
+    expect(map, house.asMap());
   });
 }
