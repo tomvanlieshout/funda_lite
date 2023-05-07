@@ -1,16 +1,17 @@
 # funda_lite
 
-A new Flutter project.
+A technical assignment to build a housing advertisment page.
 
-## Getting Started
+## How to run
 
-This project is a starting point for a Flutter application.
+This Flutter project can be run on any emulator or physical device with the following command:
 
-A few resources to get you started if this is your first Flutter project:
+```flutter run```
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+However, it is advised to run it on a device with a screen resolution of 1080x2340, as device size responsiveness was left out of scope for this assignment.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Test
+
+There is a unit test to check the serialization of the House-model. To run this test, run the following command from the root of the project:
+
+```flutter test```
