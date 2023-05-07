@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/services.dart';
+import 'package:funda_lite/model/house.dart';
 
 class FundaApi {
   static const String resourceEndpoint = 'assets/response.json';
@@ -12,5 +13,5 @@ class FundaApi {
     return jsonDecode(jsonString);
   }
 
-  Future<Map> getResponse() async => await _loadLocalAsset();
+  Future<House> getHouse() async => House.fromMap(await _loadLocalAsset());
 }

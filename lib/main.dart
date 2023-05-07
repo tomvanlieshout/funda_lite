@@ -1,8 +1,8 @@
-import 'dart:math';
 import 'dart:developer' as debug;
 
 import 'package:flutter/material.dart';
 import 'package:funda_lite/api/funda_api.dart';
+import 'package:funda_lite/model/house.dart';
 
 void main() {
   runApp(const MyApp());
@@ -36,17 +36,17 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  late final response;
+  late final House house;
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _asyncMethod();
+      _fetchHouse();
     });
   }
 
-  _asyncMethod() async => response = await widget.api.getResponse();
+  _fetchHouse() async => house = await widget.api.getHouse();
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +65,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.download, color: Colors.white),
-        onPressed: () => debug.log(response.toString()),
+        onPressed: () => debug.log(house.toString()),
       ),
     );
   }
