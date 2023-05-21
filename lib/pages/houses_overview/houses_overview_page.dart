@@ -29,40 +29,29 @@ class _HousesOverviewPageState extends State<HousesOverviewPage> {
 
   @override
   void dispose() {
-    _bloc.close();
-    _controller.dispose();
-    _debouncer.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'Funda Lite',
-          style: TextStyle(color: Colors.white),
-        ),
-      ),
-      body: Column(
-        children: [
-          _buildTextField(),
-          Flexible(
-            child: SingleChildScrollView(
-              child: BlocBuilder(
-                bloc: _bloc,
-                builder: (context, state) {
-                  if (state is bloc.InitialState) _buildWelcomeText();
-                  if (state is bloc.Loading) return const Center(child: CircularProgressIndicator());
-                  if (state is bloc.HousesLoaded) return _buildHousesCards(state.houses);
-                  if (state is bloc.ErrorState) return funda.ErrorWidget(state.message);
-                  return Container(); // ErrorState
-                },
-              ),
+    return Column(
+      children: [
+        _buildTextField(),
+        Flexible(
+          child: SingleChildScrollView(
+            child: BlocBuilder(
+              bloc: _bloc,
+              builder: (context, state) {
+                if (state is bloc.InitialState) _buildWelcomeText();
+                if (state is bloc.Loading) return const Center(child: CircularProgressIndicator());
+                if (state is bloc.HousesLoaded) return _buildHousesCards(state.houses);
+                if (state is bloc.ErrorState) return funda.ErrorWidget(state.message);
+                return Container(); // ErrorState
+              },
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
