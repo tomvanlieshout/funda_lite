@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:funda_lite/bloc/bloc.dart';
-import 'package:funda_lite/pages/house_page.dart';
-import 'package:funda_lite/pages/houses_overview_page.dart';
+import 'package:funda_lite/pages/house_details/bloc/details_bloc.dart';
+import 'package:funda_lite/pages/houses_overview/bloc/overview_bloc.dart';
+import 'package:funda_lite/pages/house_details/house_details_page.dart';
+import 'package:funda_lite/pages/houses_overview/houses_overview_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -19,35 +20,11 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.orange,
       ),
-      home: const MyHomePage(title: 'Funda Lite'),
+      home: BlocProvider(create: (context) => HousesOverviewBloc(), child: const HousesOverviewPage()),
+      routes: {
+        '/house-details-page': (context) => BlocProvider(create: (context) => HouseDetailsBloc(), child: const HouseDetailsPage()),
+      },
       debugShowCheckedModeBanner: false,
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  final String title;
-
-  const MyHomePage({super.key, required this.title});
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          widget.title,
-          style: const TextStyle(color: Colors.white),
-        ),
-      ),
-      body: BlocProvider(
-        create: (context) => FundaBloc(),
-        child: const HousesOverviewPage(),
-      ),
     );
   }
 }

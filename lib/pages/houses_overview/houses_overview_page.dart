@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:funda_lite/bloc/bloc.dart';
-import 'package:funda_lite/bloc/events.dart';
-import 'package:funda_lite/bloc/states.dart' as bloc;
 import 'package:funda_lite/models/house.dart';
+import 'package:funda_lite/pages/houses_overview/bloc/overview_bloc.dart';
+import 'package:funda_lite/pages/houses_overview/bloc/overview_events.dart';
+import 'package:funda_lite/pages/houses_overview/bloc/overview_states.dart' as bloc;
 import 'package:funda_lite/widgets/house_card.dart';
 
 class HousesOverviewPage extends StatefulWidget {
@@ -14,11 +14,12 @@ class HousesOverviewPage extends StatefulWidget {
 }
 
 class _HousesOverviewPageState extends State<HousesOverviewPage> {
-  late FundaBloc _bloc;
+  late HousesOverviewBloc _bloc;
+
   @override
   void initState() {
     super.initState();
-    _bloc = BlocProvider.of(context);
+    _bloc = BlocProvider.of<HousesOverviewBloc>(context);
     _bloc.add(LoadHouses('Nijmegen'));
   }
 
@@ -30,15 +31,23 @@ class _HousesOverviewPageState extends State<HousesOverviewPage> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: BlocBuilder(
-        bloc: _bloc,
-        builder: (context, state) {
-          if (state is bloc.InitialState) return Container();
-          if (state is bloc.Loading) return const Center(child: CircularProgressIndicator());
-          if (state is bloc.HousesLoaded) return _buildHousesCards(state.houses);
-          return Container(); // ErrorState
-        },
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          'Funda Lite',
+          style: TextStyle(color: Colors.white),
+        ),
+      ),
+      body: SingleChildScrollView(
+        child: BlocBuilder(
+          bloc: _bloc,
+          builder: (context, state) {
+            if (state is bloc.InitialState) return Container();
+            if (state is bloc.Loading) return const Center(child: CircularProgressIndicator());
+            if (state is bloc.HousesLoaded) return _buildHousesCards(state.houses);
+            return Container(); // ErrorState
+          },
+        ),
       ),
     );
   }

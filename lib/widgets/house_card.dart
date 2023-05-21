@@ -23,7 +23,7 @@ class HouseCard extends StatelessWidget {
                 child: Image.network(house.imageUrl, scale: 2.0),
               ),
               Expanded(child: _buildText()),
-              _buildButtons(),
+              _buildButtons(context, house.id),
             ],
           ),
         ),
@@ -53,8 +53,9 @@ class HouseCard extends StatelessWidget {
       );
 
   // TODO implement onPressed-handlers
-  _buildButtons() => Column(children: [
+  _buildButtons(BuildContext ctx, String id) => Column(children: [
         IconButton(onPressed: () {}, icon: const Icon(Icons.favorite_border_rounded), iconSize: 24),
-        IconButton(onPressed: () {}, icon: const Icon(Icons.chevron_right_rounded), iconSize: 38),
+        IconButton(
+            onPressed: () => Navigator.of(ctx).pushNamed('/house-details-page', arguments: id), icon: const Icon(Icons.chevron_right_rounded), iconSize: 38),
       ]);
 }
