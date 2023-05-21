@@ -44,7 +44,7 @@ class Service {
   }
 
   House _mapNodeToHouse(XmlNode node) {
-    String? address, postalCode, price, bedrooms;
+    String? address, postalCode, price, bedrooms, imageUrl;
 
     final iterator = node.children.iterator;
     while (iterator.moveNext()) {
@@ -54,8 +54,9 @@ class Service {
       if (el.qualifiedName == 'Postcode') postalCode = el.innerText;
       if (el.qualifiedName == 'Koopprijs') price = el.innerText;
       if (el.qualifiedName == 'AantalKamers') bedrooms = el.innerText;
+      if (el.qualifiedName == 'FotoMedium') imageUrl = el.innerText;
     }
 
-    return House(address: address ?? '', postalCode: postalCode ?? '', price: price ?? '', bedrooms: bedrooms ?? '');
+    return House(address: address ?? '', postalCode: postalCode ?? '', price: price ?? '', bedrooms: bedrooms ?? '', imageUrl: imageUrl ?? '');
   }
 }
