@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:funda_lite/pages/house_page.dart';
+import 'package:funda_lite/pages/houses_overview_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -41,7 +42,7 @@ class _MyHomePageState extends State<MyHomePage> {
           style: const TextStyle(color: Colors.white),
         ),
       ),
-      body: const Center(child: HousePage()),
+      body: const Center(child: HousesOverviewPage()),
     );
   }
 }
