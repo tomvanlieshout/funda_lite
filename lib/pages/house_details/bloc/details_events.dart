@@ -5,15 +5,6 @@ abstract class Event extends Equatable {
   List<Object?> get props => [];
 }
 
-class LoadHouses extends Event {
-  final String city;
-
-  LoadHouses(this.city);
-
-  @override
-  List<Object?> get props => [city];
-}
-
 class LoadHouse extends Event {
   final String id;
 
@@ -22,8 +13,6 @@ class LoadHouse extends Event {
   @override
   List<Object?> get props => [id];
 }
-
-class LoadFavorites extends Event {}
 
 class AddFavorite extends Event {
   final String id;

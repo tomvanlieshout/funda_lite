@@ -1,12 +1,12 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:funda_lite/api/service.dart';
-import 'package:funda_lite/bloc/events.dart';
-import 'package:funda_lite/bloc/states.dart';
+import 'package:funda_lite/pages/houses_overview/bloc/overview_events.dart';
+import 'package:funda_lite/pages/houses_overview/bloc/overview_states.dart';
 
-class FundaBloc extends Bloc<Event, State> {
+class HousesOverviewBloc extends Bloc<Event, State> {
   final Service _service;
 
-  FundaBloc()
+  HousesOverviewBloc()
       : _service = const Service(),
         super(InitialState()) {
     on<LoadHouses>(_handleLoadHouses);

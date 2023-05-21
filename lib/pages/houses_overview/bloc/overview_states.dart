@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
 import 'package:funda_lite/models/house.dart';
-import 'package:funda_lite/models/house_details.dart';
 
 abstract class State extends Equatable {
   @override
@@ -18,15 +17,6 @@ class HousesLoaded extends State {
 
   @override
   List<Object?> get props => [...houses];
-}
-
-class HouseLoaded extends State {
-  final HouseDetails house;
-
-  HouseLoaded(this.house);
-
-  @override
-  List<Object?> get props => [house];
 }
 
 class FavoritesLoaded extends State {
