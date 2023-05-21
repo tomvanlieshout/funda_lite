@@ -4,6 +4,7 @@ import 'package:funda_lite/bloc/bloc.dart';
 import 'package:funda_lite/bloc/events.dart';
 import 'package:funda_lite/bloc/states.dart' as bloc;
 import 'package:funda_lite/models/house.dart';
+import 'package:funda_lite/widgets/house_card.dart';
 
 class HousesOverviewPage extends StatefulWidget {
   const HousesOverviewPage({super.key});
@@ -43,11 +44,10 @@ class _HousesOverviewPageState extends State<HousesOverviewPage> {
   }
 
   _buildHousesCards(List<House?> houses) {
-    final children = houses
-        .map((house) => Card(
-              child: Text(house!.address),
-            ))
-        .toList();
+    final children = <Widget>[];
+    if (houses.isNotEmpty) {
+      children.addAll(houses.map((house) => HouseCard(house!)).toList());
+    }
     return Center(
       child: Column(
         children: children,
