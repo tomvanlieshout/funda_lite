@@ -5,7 +5,7 @@ class HouseDetails extends Equatable {
 
   const HouseDetails.fromMap(this._sourceMap);
 
-  List<String> get photos => _extractPhotos();
+  String? get imageUrl => _sourceMap['Media']?[0]['MediaItems']?[2]?['Url'];
   String? get adUrl => _sourceMap['URL'];
 
   String? get streetAndHouseNo => _sourceMap['Adres'];
@@ -24,17 +24,7 @@ class HouseDetails extends Equatable {
   String? get brokerPhoneNumber => _sourceMap['MakelaarTelefoon'];
 
   num get eurosPerSqMeter => (_sourceMap['Prijs']?['Koopprijs'] ?? 0) / (squareMeters ?? 1);
-  List<String> _extractPhotos() {
-    final result = <String>[];
-
-    for (var map in _sourceMap['Media']) {
-      int numberOfResolutions = map['MediaItems'].length;
-      result.add(map['MediaItems'][numberOfResolutions - 1]['Url']);
-    }
-
-    return result;
-  }
-
+  
   Map asMap() => {..._sourceMap};
 
   HouseDetails copyWith(Map<String, dynamic> newData) => HouseDetails.fromMap({...asMap(), ...newData});
