@@ -11,6 +11,7 @@ import 'package:funda_lite/widgets/energy_grade.dart';
 import 'package:funda_lite/widgets/expandable_section.dart';
 import 'package:funda_lite/widgets/main_info_section.dart';
 import 'package:funda_lite/widgets/specifications_section.dart';
+import 'package:funda_lite/widgets/error_widget.dart' as funda;
 import 'package:url_launcher/url_launcher.dart';
 
 class HouseDetailsPage extends StatefulWidget {
@@ -48,16 +49,7 @@ class _HouseDetailsPageState extends State<HouseDetailsPage> {
           }
           if (state is bloc.Loading) return const Center(child: CircularProgressIndicator());
           if (state is bloc.HouseLoaded) return _buildDetails(state.house);
-          if (state is bloc.ErrorState) {
-            return Center(
-                child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Text(
-                state.message,
-                style: const TextStyle(fontSize: 32),
-              ),
-            ));
-          }
+          if (state is bloc.ErrorState) return funda.ErrorWidget(state.message);
           return Container(); // ErrorState
         },
       ),

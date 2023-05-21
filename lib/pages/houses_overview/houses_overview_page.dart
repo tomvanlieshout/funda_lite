@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:funda_lite/models/house.dart';
@@ -5,6 +7,7 @@ import 'package:funda_lite/pages/houses_overview/bloc/overview_bloc.dart';
 import 'package:funda_lite/pages/houses_overview/bloc/overview_events.dart';
 import 'package:funda_lite/pages/houses_overview/bloc/overview_states.dart' as bloc;
 import 'package:funda_lite/widgets/house_card.dart';
+import 'package:funda_lite/widgets/error_widget.dart' as funda;
 
 class HousesOverviewPage extends StatefulWidget {
   const HousesOverviewPage({super.key});
@@ -14,18 +17,21 @@ class HousesOverviewPage extends StatefulWidget {
 }
 
 class _HousesOverviewPageState extends State<HousesOverviewPage> {
+  final TextEditingController _controller = TextEditingController();
+  final Debouncer _debouncer = Debouncer(const Duration(milliseconds: 400));
   late HousesOverviewBloc _bloc;
 
   @override
   void initState() {
     super.initState();
     _bloc = BlocProvider.of<HousesOverviewBloc>(context);
-    _bloc.add(LoadHouses('Nijmegen'));
   }
 
   @override
   void dispose() {
     _bloc.close();
+    _controller.dispose();
+    _debouncer.dispose();
     super.dispose();
   }
 
@@ -38,19 +44,38 @@ class _HousesOverviewPageState extends State<HousesOverviewPage> {
           style: TextStyle(color: Colors.white),
         ),
       ),
-      body: SingleChildScrollView(
-        child: BlocBuilder(
-          bloc: _bloc,
-          builder: (context, state) {
-            if (state is bloc.InitialState) return Container();
-            if (state is bloc.Loading) return const Center(child: CircularProgressIndicator());
-            if (state is bloc.HousesLoaded) return _buildHousesCards(state.houses);
-            return Container(); // ErrorState
-          },
-        ),
+      body: Column(
+        children: [
+          _buildTextField(),
+          Flexible(
+            child: SingleChildScrollView(
+              child: BlocBuilder(
+                bloc: _bloc,
+                builder: (context, state) {
+                  if (state is bloc.InitialState) _buildWelcomeText();
+                  if (state is bloc.Loading) return const Center(child: CircularProgressIndicator());
+                  if (state is bloc.HousesLoaded) return _buildHousesCards(state.houses);
+                  if (state is bloc.ErrorState) return funda.ErrorWidget(state.message);
+                  return Container(); // ErrorState
+                },
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
+
+  _buildTextField() => Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: TextField(
+          decoration: const InputDecoration(hintText: 'Fill in a city', border: OutlineInputBorder()),
+          controller: _controller,
+          onChanged: (value) => _debouncer.run(() {
+            _bloc.add(LoadHouses(_controller.text));
+          }),
+        ),
+      );
 
   _buildHousesCards(List<House?> houses) {
     final children = <Widget>[];
@@ -63,4 +88,27 @@ class _HousesOverviewPageState extends State<HousesOverviewPage> {
       ),
     );
   }
+
+  _buildWelcomeText() => const Center(
+        child: Padding(
+          padding: EdgeInsets.all(16.0),
+          child: Text('Type in the inputfield to start searching...', style: TextStyle(fontSize: 24)),
+        ),
+      );
+}
+
+/* To prevent the onChangeCallback-function to trigger immediately, set a timer
+ to delay the callback from executing. */
+class Debouncer {
+  final Duration delay;
+  Timer? _timer;
+
+  Debouncer(this.delay);
+
+  run(void Function() action) {
+    _timer?.cancel();
+    _timer = Timer(delay, action);
+  }
+
+  void dispose() => _timer = null;
 }
