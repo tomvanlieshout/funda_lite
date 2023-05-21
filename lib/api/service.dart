@@ -1,3 +1,4 @@
+import 'package:funda_lite/models/house_details.dart';
 import 'package:xml/xml.dart';
 
 import 'package:funda_lite/api/gateway.dart';
@@ -19,6 +20,16 @@ class Service {
     }
 
     return result;
+  }
+
+  Future<HouseDetails> getHouseById(String id) async {
+    try {
+      final Map<String, dynamic>? map = await _gateway.fetchHouseById(id);
+      return HouseDetails.fromMap(map ?? {});
+    } on GatewayError catch (e) {
+      if (e.statusCode == 404) throw FundaError('The house could not be found.');
+      throw FundaError('Something went wrong... Please try again later.');
+    }
   }
 
   List<XmlNode> _getObjectNodesFromDocument(XmlDocument document) {
@@ -44,12 +55,13 @@ class Service {
   }
 
   House _mapNodeToHouse(XmlNode node) {
-    String? address, postalCode, price, bedrooms, imageUrl;
+    String? id, address, postalCode, price, bedrooms, imageUrl;
 
     final iterator = node.children.iterator;
     while (iterator.moveNext()) {
       final el = iterator.current as XmlElement;
 
+      if (el.qualifiedName == 'Id') id = el.innerText;
       if (el.qualifiedName == 'Adres') address = el.innerText;
       if (el.qualifiedName == 'Postcode') postalCode = el.innerText;
       if (el.qualifiedName == 'Koopprijs') price = el.innerText;
@@ -57,6 +69,12 @@ class Service {
       if (el.qualifiedName == 'FotoMedium') imageUrl = el.innerText;
     }
 
-    return House(address: address ?? '', postalCode: postalCode ?? '', price: price ?? '', bedrooms: bedrooms ?? '', imageUrl: imageUrl ?? '');
+    return House(id: id ?? '', address: address ?? '', postalCode: postalCode ?? '', price: price ?? '', bedrooms: bedrooms ?? '', imageUrl: imageUrl ?? '');
   }
+}
+
+class FundaError {
+  String message;
+
+  FundaError(this.message);
 }
