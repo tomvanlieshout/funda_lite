@@ -1,10 +1,12 @@
 import 'package:xml/xml.dart';
 
 import 'package:funda_lite/api/gateway.dart';
-import 'package:funda_lite/model/house.dart';
+import 'package:funda_lite/models/house.dart';
 
 class Service {
-  final Gateway _gateway = const Gateway();
+  final Gateway _gateway;
+
+  const Service() : _gateway = const Gateway();
 
   Future<List<House?>> getHousesByCity(String city) async {
     final result = <House?>[];

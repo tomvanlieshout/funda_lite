@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:funda_lite/bloc/bloc.dart';
 import 'package:funda_lite/pages/house_page.dart';
 import 'package:funda_lite/pages/houses_overview_page.dart';
 
@@ -42,7 +44,10 @@ class _MyHomePageState extends State<MyHomePage> {
           style: const TextStyle(color: Colors.white),
         ),
       ),
-      body: const Center(child: HousesOverviewPage()),
+      body: BlocProvider(
+        create: (context) => FundaBloc(),
+        child: const HousesOverviewPage(),
+      ),
     );
   }
 }
