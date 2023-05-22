@@ -40,3 +40,4 @@ Running all the tests can be done with the following command:
 
 Watch the clip below to see the app in action!
 
+https://github.com/tomvanlieshout/funda_lite/assets/39647023/254e400a-4ca9-49ac-a045-c11c9524e6f9
