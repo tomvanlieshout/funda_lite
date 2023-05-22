@@ -8,17 +8,35 @@ This Flutter project can be run on any emulator or physical device with the foll
 
 ```flutter run```
 
-However, it is advised to run it on a device with a screen resolution of 1080x2340, as device size responsiveness was left out of scope for this assignment.
+## Architecture
 
-## Test
+The project follows the following architecture flow, back-to-front:
+* Gateway - this class takes care of HTTP requests and responses, either returning the body of the response, or throwing a GatewayError
+* Service - this class invokes the Gateway and parses the response-bodies from either Maps (JSON) or XmlDocuments, to the model classes (House and HouseDetails). It validates the response.statusCode, and in case it is outside the 200-range, throws a FundaError.
+* Bloc - the state management solution. The Bloc is injected in the tree above the Widgets that need the Bloc. The Bloc takes in Events (e.g. a search query), performs the business logic (invoking the Service) and outputs State. In case of a FundaError thrown by the Service, it emits ErrorStates.
+* UI - the UI that the user interacts with. The UI uses a BlocBuilder to listen to changes in state and update the UI accordingly.
 
-There is a unit test to check the serialization of the House-model. To run this test, run the following command from the root of the project:
+## Tests
 
+The project contains three tests:
+### details_bloc_test.dart
+This unit test tests the `DetailsBloc`. The Bloc depends on the `Service`, which is mocked with mockito. The `@GenerateMocks`-annotation generates a ...test.mocks.dart-file. With `when()`-methods from the mockito package, the output of the `MockService` is controlled.
+
+The test is to verify whether the bloc outputs the correct state given either a data-object or an error-object.
+
+### favorites_test.dart
+This integration test tests the `FavoritesPage`. It pumps the widget, together with an instance of `FavoritesBloc`. Adding favorited `HouseCards` is done within the `OverviewPage`, which is not part of this test. Hence the adding is done directly to the bloc.
+
+Removing is done by finding the `HeartIcon` (a button) and tapping it. Afterwards, the amount of visible cards is verified.
+
+### debouncer_test.dart
+This unit test tests the `Debouncer`-class. This class is to prevent the search-endpoint from being called too often. It "debounces" user input until their is no input registered for some time (set to 400ms).
+
+### Running the tests
+Running all the tests can be done with the following command:
 ```flutter test```
 
 ## Demo
 
 Watch the clip below to see the app in action!
-
-https://user-images.githubusercontent.com/39647023/236691728-ad018bd2-33cb-4515-af61-d3b9ce58b6c5.mp4
 
