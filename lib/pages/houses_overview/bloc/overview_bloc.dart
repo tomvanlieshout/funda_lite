@@ -3,7 +3,7 @@ import 'package:funda_lite/api/service.dart';
 import 'package:funda_lite/pages/houses_overview/bloc/overview_events.dart';
 import 'package:funda_lite/pages/houses_overview/bloc/overview_states.dart';
 
-class HousesOverviewBloc extends Bloc<Event, State> {
+class HousesOverviewBloc extends Bloc<OverviewEvent, OverviewState> {
   final Service _service;
 
   HousesOverviewBloc()
@@ -17,9 +17,8 @@ class HousesOverviewBloc extends Bloc<Event, State> {
       emit(Loading());
       final houses = await _service.getHousesByCity(event.city);
       emit(HousesLoaded(houses));
-    } on Exception catch (e) {
-      // TODO
-      // emit(ErrorState(e, errorCode))
+    } on FundaError catch (e) {
+      emit(ErrorState(e.message));
     }
   }
 }

@@ -3,7 +3,7 @@ import 'package:funda_lite/api/service.dart';
 import 'package:funda_lite/pages/house_details/bloc/details_events.dart';
 import 'package:funda_lite/pages/house_details/bloc/details_states.dart';
 
-class HouseDetailsBloc extends Bloc<Event, State> {
+class HouseDetailsBloc extends Bloc<DetailsEvent, DetailsState> {
   final Service _service;
 
   HouseDetailsBloc()
@@ -18,7 +18,6 @@ class HouseDetailsBloc extends Bloc<Event, State> {
       final houseDetails = await _service.getHouseById(event.id);
       emit(HouseLoaded(houseDetails));
     } on FundaError catch (e) {
-      // TODO
       emit(ErrorState(e.message));
     }
   }

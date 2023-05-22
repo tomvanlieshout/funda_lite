@@ -18,5 +18,5 @@ class House extends Equatable {
   });
 
   @override
-  List<Object?> get props => [id, address, postalCode, price, bedrooms, imageUrl];
+  List<Object?> get props => [id];
 }
