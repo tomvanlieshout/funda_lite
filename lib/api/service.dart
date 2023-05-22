@@ -24,7 +24,7 @@ class Service {
 
       return result;
     } on GatewayError catch (e) {
-      if (e.statusCode == 404) throw FundaError('The house could not be found.');
+      if (e.statusCode == 404) throw FundaError('No houses could be found.');
       throw FundaError('Something went wrong... Please try again later.');
     }
   }

@@ -15,8 +15,7 @@ class Gateway {
     final query = Uri.parse('$httpEndpoint/$searchEndpoint/?type=koop&zo=/$city');
     final response = await http.get(query);
 
-    final body = _validateAndDecodeXmlResponse(response);
-    return body;
+    return _validateAndDecodeXmlResponse(response);
   }
 
   Future<Map<String, dynamic>?> fetchHouseById(String id) async {
