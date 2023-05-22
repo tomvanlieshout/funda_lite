@@ -3,10 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:funda_lite/models/house_details.dart';
 import 'package:funda_lite/pages/house_details/bloc/details_bloc.dart';
 import 'package:funda_lite/pages/house_details/bloc/details_events.dart';
-import 'package:funda_lite/pages/house_details/bloc/details_states.dart' as bloc;
+import 'package:funda_lite/pages/house_details/bloc/details_states.dart';
 import 'package:funda_lite/widgets/broker_section.dart';
 
-import 'package:funda_lite/widgets/button_bar.dart' as funda;
 import 'package:funda_lite/widgets/energy_grade.dart';
 import 'package:funda_lite/widgets/expandable_section.dart';
 import 'package:funda_lite/widgets/main_info_section.dart';
@@ -43,13 +42,13 @@ class _HouseDetailsPageState extends State<HouseDetailsPage> {
       body: BlocBuilder(
         bloc: _bloc,
         builder: (context, state) {
-          if (state is bloc.InitialState) {
+          if (state is InitialState) {
             _bloc.add(LoadHouse(id));
             return Container();
           }
-          if (state is bloc.Loading) return const Center(child: CircularProgressIndicator());
-          if (state is bloc.HouseLoaded) return _buildDetails(state.house);
-          if (state is bloc.ErrorState) return funda.ErrorWidget(state.message);
+          if (state is Loading) return const Center(child: CircularProgressIndicator());
+          if (state is HouseLoaded) return _buildDetails(state.house);
+          if (state is ErrorState) return funda.ErrorWidget(state.message);
           return Container(); // ErrorState
         },
       ),
@@ -78,7 +77,7 @@ class _HouseDetailsPageState extends State<HouseDetailsPage> {
                     numberOfBedrooms: details.bedrooms as int,
                     energyGrade: details.energyGrade ?? '',
                   ),
-                  _buildButtonBar(details),
+                  _buildLaunchButton(details),
                 ],
               ),
             ),
@@ -101,23 +100,12 @@ class _HouseDetailsPageState extends State<HouseDetailsPage> {
     );
   }
 
-  _buildButtonBar(HouseDetails details) {
-    return funda.ButtonBar([
-      IconButton(
-          onPressed: () => setState(() {
-                // TODO
-                // isFavorited = !isFavorited;
-              }),
-          icon: const Icon(
-            Icons.favorite_border_rounded,
-            color: Colors.black,
-          )),
-      IconButton(
-        icon: const Icon(Icons.open_in_browser_rounded),
-        onPressed: () {
-          if (details.adUrl != null) launchUrl(Uri.parse(details.adUrl ?? ''), mode: LaunchMode.externalApplication);
-        },
-      ),
-    ]);
+  _buildLaunchButton(HouseDetails details) {
+    return IconButton(
+      icon: const Icon(Icons.open_in_browser_rounded),
+      onPressed: () {
+        if (details.adUrl != null) launchUrl(Uri.parse(details.adUrl ?? ''), mode: LaunchMode.externalApplication);
+      },
+    );
   }
 }

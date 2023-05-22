@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:funda_lite/models/house.dart';
 import 'package:funda_lite/pages/houses_overview/bloc/overview_bloc.dart';
 import 'package:funda_lite/pages/houses_overview/bloc/overview_events.dart';
-import 'package:funda_lite/pages/houses_overview/bloc/overview_states.dart' as bloc;
+import 'package:funda_lite/pages/houses_overview/bloc/overview_states.dart';
 import 'package:funda_lite/widgets/house_card.dart';
 import 'package:funda_lite/widgets/error_widget.dart' as funda;
 
@@ -42,10 +42,10 @@ class _HousesOverviewPageState extends State<HousesOverviewPage> {
             child: BlocBuilder(
               bloc: _bloc,
               builder: (context, state) {
-                if (state is bloc.InitialState) _buildWelcomeText();
-                if (state is bloc.Loading) return const Center(child: CircularProgressIndicator());
-                if (state is bloc.HousesLoaded) return _buildHousesCards(state.houses);
-                if (state is bloc.ErrorState) return funda.ErrorWidget(state.message);
+                if (state is InitialState) _buildWelcomeText();
+                if (state is Loading) return const Center(child: CircularProgressIndicator());
+                if (state is HousesLoaded) return _buildHousesCards(state.houses);
+                if (state is ErrorState) return funda.ErrorWidget(state.message);
                 return Container(); // ErrorState
               },
             ),
@@ -86,7 +86,7 @@ class _HousesOverviewPageState extends State<HousesOverviewPage> {
       );
 }
 
-/* To prevent the onChangeCallback-function to trigger immediately, set a timer
+/* To prevent the onChangeCallback-function from triggering immediately, set a timer
  to delay the callback from executing. */
 class Debouncer {
   final Duration delay;
