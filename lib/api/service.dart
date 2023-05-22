@@ -12,14 +12,21 @@ class Service {
   Future<List<House?>> getHousesByCity(String city) async {
     final result = <House?>[];
 
-    final xmlResponse = await _gateway.fetchHousesByCity(city);
-    final nodesList = _getObjectNodesFromDocument(xmlResponse);
+    try {
+      final xmlResponse = await _gateway.fetchHousesByCity(city);
+      if (xmlResponse == null) return [];
 
-    for (var node in nodesList) {
-      result.add(_mapNodeToHouse(node));
+      final nodesList = _getObjectNodesFromDocument(xmlResponse);
+
+      for (var node in nodesList) {
+        result.add(_mapNodeToHouse(node));
+      }
+
+      return result;
+    } on GatewayError catch (e) {
+      if (e.statusCode == 404) throw FundaError('The house could not be found.');
+      throw FundaError('Something went wrong... Please try again later.');
     }
-
-    return result;
   }
 
   Future<HouseDetails> getHouseById(String id) async {
@@ -69,7 +76,14 @@ class Service {
       if (el.qualifiedName == 'FotoMedium') imageUrl = el.innerText;
     }
 
-    return House(id: id ?? '', address: address ?? '', postalCode: postalCode ?? '', price: price ?? '', bedrooms: bedrooms ?? '', imageUrl: imageUrl ?? '');
+    return House(
+      id: id ?? '',
+      address: address ?? '',
+      postalCode: postalCode ?? '',
+      price: price ?? '',
+      bedrooms: bedrooms ?? '',
+      imageUrl: imageUrl ?? '',
+    );
   }
 }
 

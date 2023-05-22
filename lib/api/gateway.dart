@@ -11,11 +11,11 @@ class Gateway {
 
   const Gateway();
 
-  Future<XmlDocument> fetchHousesByCity(String city) async {
+  Future<XmlDocument?> fetchHousesByCity(String city) async {
     final query = Uri.parse('$httpEndpoint/$searchEndpoint/?type=koop&zo=/$city');
     final response = await http.get(query);
 
-    final body = _decodeXmlResponse(response.body);
+    final body = _validateAndDecodeXmlResponse(response);
     return body;
   }
 
@@ -26,8 +26,13 @@ class Gateway {
     return _validateAndConvertToJson(response);
   }
 
-  // TODO also validate response before trying to parse.
-  XmlDocument _decodeXmlResponse(String content) => XmlDocument.parse(content);
+  XmlDocument? _validateAndDecodeXmlResponse(http.Response httpResponse) {
+    if (httpResponse.statusCode >= 200 && httpResponse.statusCode < 300) {
+      return XmlDocument.parse(httpResponse.body);
+    } else {
+      throw GatewayError(httpResponse.reasonPhrase, httpResponse.statusCode);
+    }
+  }
 
   Future<Map<String, dynamic>?> _validateAndConvertToJson(http.Response httpResponse) async {
     if (httpResponse.statusCode >= 200 && httpResponse.statusCode < 300) {
