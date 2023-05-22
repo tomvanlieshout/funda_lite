@@ -46,7 +46,7 @@ class _HousesOverviewPageState extends State<HousesOverviewPage> {
                 if (state is Loading) return const Center(child: CircularProgressIndicator());
                 if (state is HousesLoaded) return _buildHousesCards(state.houses);
                 if (state is ErrorState) return funda.ErrorWidget(state.message);
-                return Container(); // ErrorState
+                return Container();
               },
             ),
           ),
@@ -71,6 +71,7 @@ class _HousesOverviewPageState extends State<HousesOverviewPage> {
     if (houses.isNotEmpty) {
       children.addAll(houses.map((house) => HouseCard(house!)).toList());
     }
+
     return Center(
       child: Column(
         children: children,
@@ -81,7 +82,7 @@ class _HousesOverviewPageState extends State<HousesOverviewPage> {
   _buildWelcomeText() => const Center(
         child: Padding(
           padding: EdgeInsets.all(16.0),
-          child: Text('Type in the inputfield to start searching...', style: TextStyle(fontSize: 24)),
+          child: Text('Type to start searching...', style: TextStyle(fontSize: 24)),
         ),
       );
 }

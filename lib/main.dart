@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:funda_lite/api/service.dart';
 import 'package:funda_lite/pages/favorites/bloc/favorites_bloc.dart';
 import 'package:funda_lite/pages/favorites/favorites_page.dart';
 import 'package:funda_lite/pages/house_details/bloc/details_bloc.dart';
@@ -55,7 +56,7 @@ class _MyAppState extends State<MyApp> {
         ),
       ),
       routes: {
-        '/house-details-page': (context) => BlocProvider(create: (context) => HouseDetailsBloc(), child: const HouseDetailsPage()),
+        '/house-details-page': (context) => BlocProvider(create: (context) => HouseDetailsBloc(const Service()), child: const HouseDetailsPage()),
       },
       debugShowCheckedModeBanner: false,
     );

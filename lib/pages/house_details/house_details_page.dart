@@ -49,7 +49,7 @@ class _HouseDetailsPageState extends State<HouseDetailsPage> {
           if (state is Loading) return const Center(child: CircularProgressIndicator());
           if (state is HouseLoaded) return _buildDetails(state.house);
           if (state is ErrorState) return funda.ErrorWidget(state.message);
-          return Container(); // ErrorState
+          return Container();
         },
       ),
     );
