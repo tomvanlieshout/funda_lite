@@ -44,7 +44,6 @@ void main() {
     await widgetTester.pumpAndSettle();
     expect(cardFinder, findsNWidgets(2));
 
-    // bloc.add(RemoveFavorite(house1));
     final heartButtonFinder = find.byIcon(Icons.favorite_rounded).first; // At this point there are two cards (so two buttons); pick whichever's first
     await widgetTester.tap(heartButtonFinder); // Tapping the button should remove 1 HouseCard from the list
     await widgetTester.pumpAndSettle();
