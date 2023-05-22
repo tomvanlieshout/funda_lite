@@ -4,7 +4,7 @@ A technical assignment to build a housing advertisment page.
 
 ## How to run
 
-This Flutter project can be run on any emulator or physical device with the following command:
+Inside `gateway.dart`, change line 7 to have a valid API key. Otherwise, the app will show error messages. Then run the app with the following command:
 
 ```flutter run```
 
